@@ -1,16 +1,20 @@
+// 舰船图标
 const CL_image = images.read("/sdcard/images/CL.png");
 const SS_image = images.read("/sdcard/images/SS.png");
 const CVE_image = images.read("/sdcard/images/CVE.png");
 
+// 关键点
 const title_image = images.read("/sdcard/images/6-1-title.png");
 const start_fight_image = images.read("/sdcard/images/start_fight.png");
 const go_to_war_image = images.read("/sdcard/images/go_to_war.png");
 const go_back_image = images.read("/sdcard/images/go_back.png");
+
+// 阵型
 const single_transverse_image = images.read("/sdcard/images/single_transverse.png");
 
 requestScreenCapture(true);
 while (true) {
-	// find the 6-1 title
+	console.log("确认地图是否为6-1");
 	let matchingResult = images.matchTemplate(captureScreen(), title_image, {
 		max: 1,
 		region: [1410, 190, 290, 50],
