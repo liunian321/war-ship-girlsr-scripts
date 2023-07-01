@@ -3,7 +3,6 @@ const title_image = images.read("/sdcard/images/9_1_title.png");
 const go_to_war_image = images.read("/sdcard/images/go_to_war.png");
 const go_back_image = images.read("/sdcard/images/go_back.png");
 const start_fight_image = images.read("/sdcard/images/start_fight.png");
-const click_continue_image = images.read("/sdcard/images/click_continue.png");
 // 阵型
 const single_transverse_image = images.read("/sdcard/images/single_transverse.png");
 // 舰船图标
