@@ -19,6 +19,12 @@ while (true) {
 		max: 1,
 		region: [1410, 190, 290, 50],
 	});
+
+	if (matchingResult.matches === undefined || matchingResult.matches.length === 0) {
+		console.log("不是6-1地图!");
+		break;
+	}
+
 	let matche = matchingResult.matches[0];
 	click(matche.point.x + 5, matche.point.y + 5);
 	sleep(2000);

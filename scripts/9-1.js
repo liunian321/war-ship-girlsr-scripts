@@ -18,6 +18,12 @@ while (true) {
 		max: 1,
 		region: [1460, 195, 185, 40],
 	});
+
+	if (matchingResult.matches === undefined || matchingResult.matches.length === 0) {
+		console.log("不是9-1地图!");
+		break;
+	}
+
 	let matche = matchingResult.matches[0];
 	click(matche.point.x + 5, matche.point.y + 5);
 	sleep(1500);
@@ -61,7 +67,7 @@ while (true) {
 	});
 	if (matchingResult.matches === undefined || matchingResult.matches.length === 0) {
 		console.log("不是目标舰队，返回");
-		click(1370, 980);
+		click(1371, 980);
 		sleep(1500);
 		continue;
 	}
