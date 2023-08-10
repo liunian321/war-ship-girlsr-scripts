@@ -10,7 +10,6 @@ const ss_image = images.read("/sdcard/images/ss-I.png");
 
 // 申请截图权限
 requestScreenCapture(false);
-// console.log(device.width, device.height);
 
 while (true) {
 	console.log("确认地图是否为9-1");
