@@ -2,6 +2,7 @@ const sortie_prepare = images.read("/sdcard/images/sortie_prepare.png");
 const go_to_war_image = images.read("/sdcard/images/go_to_war.png");
 const start_fight_image = images.read("/sdcard/images/start_fight.png");
 const abandon_image = images.read("/sdcard/images/abandon.png");
+const advance_image = images.read("/sdcard/images/advance.png");
 const go_back_image = images.read("/sdcard/images/go_back.png");
 // 阵型
 const trapezoidal_image = images.read("/sdcard/images/trapezoidal.png");
@@ -47,24 +48,69 @@ while (true) {
 	// 选择梯形阵
 	selectTrapezoidal();
 
+	let abandon = false;
 	sleep(20000);
 	while (true) {
 		click(1200, 600);
 		sleep(1000);
-		matchingResult = images.matchTemplate(captureScreen(), go_back_image, {
+
+		// 如果没有点过放弃按钮，就检查是否需要放弃
+		if (!abandon) {
+			matchingResult = images.matchTemplate(captureScreen(), abandon_image, {
+				max: 1,
+				region: [1210, 670, 90, 60],
+			});
+			if (
+				matchingResult.matches !== undefined &&
+				matchingResult.matches.length > 0 &&
+				matchingResult.matches[0].similarity > 0.8
+			) {
+				console.log("放弃战斗");
+				click(matchingResult.matches[0].point.x + 5, matchingResult.matches[0].point.y + 5);
+				abandon = true;
+				sleep(1500);
+			}
+		}
+
+		matchingResult = images.matchTemplate(captureScreen(), advance_image, {
 			max: 1,
-			region: [1210, 670, 90, 60],
+			region: [620, 670, 90, 60],
 		});
 		if (
 			matchingResult.matches !== undefined &&
 			matchingResult.matches.length > 0 &&
 			matchingResult.matches[0].similarity > 0.8
 		) {
-			console.log("回港");
+			console.log("点击前进");
 			click(matchingResult.matches[0].point.x + 5, matchingResult.matches[0].point.y + 5);
-			sleep(1500);
 			break;
 		}
+	}
+
+	// 等待开始战斗按钮出现
+	waitForStartFight(2);
+
+	// 点击开始战斗
+	click(1645, 985);
+	selectTrapezoidal();
+	sleep(25000);
+
+	while (true) {
+		console.log("确认战斗是否结束");
+		matchingResult = images.matchTemplate(captureScreen(), sortie_prepare, {
+			max: 1,
+			region: [1440, 850, 380, 120],
+		});
+		if (
+			matchingResult.matches !== undefined &&
+			matchingResult.matches.length > 0 &&
+			matchingResult.matches[0].similarity > 0.8
+		) {
+			break;
+		}
+
+		sleep(1200);
+		click(200, 100);
 	}
 }
 
