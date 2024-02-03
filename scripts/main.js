@@ -1,5 +1,8 @@
 const reuslt = images.requestScreenCapture(false);
 console.log(reuslt);
 const image = captureScreen();
-const clip = images.clip(image, 1580, 985, 195, 50);
-clip.saveTo("/sdcard/images/go_to_war.png");
+
+const clip = images.clip(image, 1220, 680, 75, 45);
+const fileName = "go_back";
+
+clip.saveTo("/sdcard/images/" + fileName + ".png");

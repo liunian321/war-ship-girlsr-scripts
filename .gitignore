@@ -1,5 +1,2 @@
-/.idea/.gitignore
-/.idea/git_toolbox_prj.xml
-/.idea/modules.xml
-/.idea/vcs.xml
-/.idea/zj-gril.iml
+/.idea/*
+.env
