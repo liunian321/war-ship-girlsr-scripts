@@ -27,6 +27,11 @@
 
         x-l, y-l, x-r, y-r
 退出澡堂    50, 27, 150, 123
+远征完成    800, 0, 170, 70             yuanzheng_finished
+收获奖励    1615, 910, 220, 50          get_reward
+章节结束    155, 720, 50, 20            zhangjie_over
+继续使用该舰队 640, 650, 175, 65        confirm
+出征        300, 20, 120, 50           chuzheng
 
 重巡    CA
 潜艇    ss-I、SS、SS-L

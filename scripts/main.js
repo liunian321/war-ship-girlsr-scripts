@@ -2,7 +2,7 @@ const reuslt = images.requestScreenCapture(false);
 console.log(reuslt);
 const image = captureScreen();
 
-const clip = images.clip(image, 1220, 680, 75, 45);
-const fileName = "go_back";
+const clip = images.clip(image, 300, 20, 120, 50);
+const fileName = "chuzheng";
 
-clip.saveTo("/sdcard/images/" + fileName + ".png");
+clip.saveTo("/mnt/shared/Pictures/" + fileName + ".png");
