@@ -90,7 +90,7 @@ while (true) {
     if (!abandon) {
       matchingResult = images.matchTemplate(captureScreen(), abandon_image, {
         max: 1,
-        region: [1210, 670, 90, 60],
+        region: [1350, 960, 150, 100],
       });
       if (
         matchingResult.matches !== undefined &&
@@ -187,6 +187,9 @@ function waitForStartFight(flag) {
   }
 }
 
+/**
+ * 选择梯形阵
+ */
 function selectTrapezoidal() {
   let faildedCount = 0;
   while (true) {

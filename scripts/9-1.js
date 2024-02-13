@@ -5,6 +5,7 @@ const title_image = images.read("/mnt/shared/Pictures/9_1_title.png");
 const go_to_war_image = images.read("/mnt/shared/Pictures/go_to_war.png");
 const go_back_image = images.read("/mnt/shared/Pictures/go_back.png");
 const start_fight_image = images.read("/mnt/shared/Pictures/start_fight.png");
+const abandon_image = images.read("/mnt/shared/Pictures/abandon.png");
 // 阵型
 const single_transverse_image = images.read(
   "/mnt/shared/Pictures/single_transverse.png"
@@ -119,9 +120,31 @@ while (true) {
   }
 
   sleep(15000);
+  let abandon = false;
   while (true) {
+    if (!abandon) {
+      matchingResult = images.matchTemplate(captureScreen(), abandon_image, {
+        max: 1,
+        region: [1350, 960, 150, 100],
+      });
+      if (
+        matchingResult.matches !== undefined &&
+        matchingResult.matches.length > 0 &&
+        matchingResult.matches[0].similarity > 0.8
+      ) {
+        console.log("放弃战斗");
+        click(
+          matchingResult.matches[0].point.x + 5,
+          matchingResult.matches[0].point.y + 5
+        );
+        abandon = true;
+        sleep(1500);
+      }
+    }
+
     click(1200, 600);
     sleep(500);
+
     matchingResult = images.matchTemplate(captureScreen(), go_back_image, {
       max: 1,
       region: [1210, 670, 90, 60],
