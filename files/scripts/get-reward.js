@@ -62,7 +62,6 @@ function getReward(收获奖励, 章节结束, 远征完成, 确认, 出征) {
       for (let index = 0; index < 3; index++) {
         sleep(2000);
 
-        // 继续使用该舰队
         matchingResult = images.matchTemplate(captureScreen(), 确认, {
           max: 1,
           region: [630, 640, 200, 80],
