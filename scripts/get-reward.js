@@ -1,4 +1,4 @@
-const getReward = require("/mnt/shared/Pictures/get-reward.js");
+const getReward = require("/mnt/shared/Pictures/scripts/get-reward.js");
 
 const 收获奖励 = images.read("/mnt/shared/Pictures/get_reward.png");
 const 章节结束 = images.read("/mnt/shared/Pictures/zhangjie_over.png");
