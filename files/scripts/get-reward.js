@@ -1,25 +1,36 @@
-function getReward(收获奖励, 章节结束, 远征完成, 确认, 出征) {
+/**
+ * quickGetReward 是否快速收获奖励
+ * 因为每次到零点，快速收获奖励的判断会失效。所以如果需要长时间的挂机，建议关闭快速收获奖励
+ */
+function getReward(收获奖励, 章节结束, 远征完成, 确认, 出征,quickGetReward) {
   // 申请截图权限
   requestScreenCapture(false);
+  const isEmpty = require("lodash/isEmpty");
+  if (isEmpty(quickGetReward)){
+    quickGetReward = false;
+    console.log("快速收获奖励未设置，默认关闭");
+  }
 
-  let matchingResult = images.matchTemplate(captureScreen(), 远征完成, {
-    max: 1,
-    region: [795, 0, 200, 100],
-  });
+  let matchingResult;
+  if (quickGetReward) {
+    matchingResult = images.matchTemplate(captureScreen(), 远征完成, {
+      max: 1,
+      region: [795, 0, 200, 100],
+    });
 
-  if (
-    matchingResult.matches === undefined ||
-    matchingResult.matches.length === 0
-  ) {
-    console.log("没有可收获的奖励");
-    return;
+    if (
+      matchingResult.matches === undefined ||
+      matchingResult.matches.length === 0
+    ) {
+      console.log("没有可收获的奖励");
+      return;
+    }
   }
 
   console.log("准备收获奖励");
 
   // 如果远征完成，则开始收获奖励
-  let matche = matchingResult.matches[0];
-  click(matche.point.x + 80, matche.point.y + 35);
+  click(850, 35);
   sleep(2000);
 
   while (true) {
@@ -81,24 +92,27 @@ function getReward(收获奖励, 章节结束, 远征完成, 确认, 出征) {
       sleep(2000);
     }
 
-    matchingResult = images.matchTemplate(captureScreen(), 远征完成, {
-      max: 1,
-      region: [795, 0, 200, 100],
-    });
+
+    if(quickGetReward){
+      matchingResult = images.matchTemplate(captureScreen(), 远征完成, {
+        max: 1,
+        region: [795, 0, 200, 100],
+      });
   
-    if (
-      matchingResult.matches === undefined ||
-      matchingResult.matches.length === 0
-    ) {
-      console.log("没有可收获的奖励");
-      break;
+      if (
+        matchingResult.matches === undefined ||
+        matchingResult.matches.length === 0
+      ) {
+        console.log("没有可收获的奖励");
+        break;
+      }
     }
   }
 
   for (let i = 0; i < 3; i++) {
     matchingResult = images.matchTemplate(captureScreen(), 出征, {
       max: 1,
-      region: [280, 10, 150, 100 ],
+      region: [280, 10, 150, 100],
     });
 
     if (

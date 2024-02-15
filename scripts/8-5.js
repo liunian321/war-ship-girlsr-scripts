@@ -18,6 +18,10 @@ const 远征完成 = images.read("/mnt/shared/Pictures/yuanzheng_finished.png");
 const 出征 = images.read("/mnt/shared/Pictures/chuzheng.png");
 const 确认 = images.read("/mnt/shared/Pictures/confirm.png");
 
+
+// 是否快速收获奖励 true(开启) 或者 false(关闭)
+const quickGetReward = true;
+
 // 申请截图权限
 requestScreenCapture(false);
 

@@ -6,9 +6,12 @@ const 远征完成 = images.read("/mnt/shared/Pictures/yuanzheng_finished.png");
 const 出征 = images.read("/mnt/shared/Pictures/chuzheng.png");
 const 确认 = images.read("/mnt/shared/Pictures/confirm.png");
 
-while (true) {
-  getReward(收获奖励, 章节结束, 远征完成, 确认, 出征);
+// 是否快速收获奖励 true(开启) 或者 false(关闭)
+const quickGetReward = false;
 
-  // 等待5分钟
-  sleep(300000);
+while (true) {
+  getReward(收获奖励, 章节结束, 远征完成, 确认, 出征, quickGetReward);
+
+  // 等待15分钟
+  sleep(15 * 60 * 1000);
 }
