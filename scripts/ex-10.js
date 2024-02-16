@@ -28,8 +28,6 @@ while (true) {
   console.log("出击准备");
   let matche = matchingResult.matches[0];
 
-  console.log(tryCount);
-
   if (!matche) {
     console.log("没有找到出击准备");
     break;
