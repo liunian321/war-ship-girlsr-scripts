@@ -23,7 +23,7 @@ const 出征 = images.read("/mnt/shared/Pictures/chuzheng.png");
 const 确认 = images.read("/mnt/shared/Pictures/confirm.png");
 
 // 是否快速收获奖励 true(开启) 或者 false(关闭)
-const quickGetReward = true;
+const quickGetReward = false;
 
 requestScreenCapture(true);
 while (true) {

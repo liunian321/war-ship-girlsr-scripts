@@ -20,7 +20,7 @@ const 出征 = images.read("/mnt/shared/Pictures/chuzheng.png");
 const 确认 = images.read("/mnt/shared/Pictures/confirm.png");
 
 // 是否快速收获奖励 true(开启) 或者 false(关闭)
-const quickGetReward = true;
+const quickGetReward = false;
 
 // 申请截图权限
 requestScreenCapture(false);
@@ -41,7 +41,7 @@ while (true) {
   }
 
   // 尝试收获奖励
-  getReward(收获奖励, 章节结束, 远征完成, 确认, 出征);
+  getReward(收获奖励, 章节结束, 远征完成, 确认, 出征, quickGetReward);
 
   let matche = matchingResult.matches[0];
   click(matche.point.x + 5, matche.point.y + 5);

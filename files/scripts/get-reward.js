@@ -2,11 +2,12 @@
  * quickGetReward 是否快速收获奖励
  * 因为每次到零点，快速收获奖励的判断会失效。所以如果需要长时间的挂机，建议关闭快速收获奖励
  */
-function getReward(收获奖励, 章节结束, 远征完成, 确认, 出征,quickGetReward) {
+function getReward(收获奖励, 章节结束, 远征完成, 确认, 出征, quickGetReward) {
+  let getReward = false;
   // 申请截图权限
   requestScreenCapture(false);
   const isEmpty = require("lodash/isEmpty");
-  if (isEmpty(quickGetReward)){
+  if (isEmpty(quickGetReward)) {
     quickGetReward = false;
     console.log("快速收获奖励未设置，默认关闭");
   }
@@ -65,6 +66,7 @@ function getReward(收获奖励, 章节结束, 远征完成, 确认, 出征,quic
 
       console.log("收获奖励");
       click(matche.point.x + 5, matche.point.y + 5);
+      getReward = true;
 
       // 等待动画结束
       sleep(2000);
@@ -92,13 +94,12 @@ function getReward(收获奖励, 章节结束, 远征完成, 确认, 出征,quic
       sleep(2000);
     }
 
-
-    if(quickGetReward){
+    if (quickGetReward) {
       matchingResult = images.matchTemplate(captureScreen(), 远征完成, {
         max: 1,
         region: [795, 0, 200, 100],
       });
-  
+
       if (
         matchingResult.matches === undefined ||
         matchingResult.matches.length === 0
@@ -127,6 +128,8 @@ function getReward(收获奖励, 章节结束, 远征完成, 确认, 出征,quic
 
     sleep(2000);
   }
+
+  return getReward;
 }
 
 module.exports = getReward;
