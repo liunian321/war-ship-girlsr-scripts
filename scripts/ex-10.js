@@ -5,6 +5,10 @@ const go_to_war_image = images.read("/mnt/shared/Pictures/go_to_war.png");
 const start_fight_image = images.read("/mnt/shared/Pictures/start_fight.png");
 const abandon_image = images.read("/mnt/shared/Pictures/abandon.png");
 const go_back_image = images.read("/mnt/shared/Pictures/go_back.png");
+const receive_reward_image = images.read(
+  "/mnt/shared/Pictures/receive_reward.png"
+);
+
 // 阵型
 const trapezoidal_image = images.read("/mnt/shared/Pictures/trapezoidal.png");
 
@@ -18,6 +22,8 @@ const 确认 = images.read("/mnt/shared/Pictures/confirm.png");
 requestScreenCapture(false);
 
 let tryCount = 0;
+// 领取每日奖励时间戳
+let getDailyRewardTimeStamp = -1;
 
 while (true) {
   let matchingResult = images.matchTemplate(captureScreen(), sortie_prepare, {
@@ -48,6 +54,37 @@ while (true) {
 
         // 等待动画
         sleep(2000);
+
+        // 如果距离上次领取每日奖励的时间超过23小时或者当前小时为0点，则尝试领取每日奖励
+        if (
+          // getDailyRewardTimeStamp === -1 ||
+          new Date().getHours() === 0 ||
+          new Date().getTime() - getDailyRewardTimeStamp > 23 * 60 * 60 * 1000
+        ) {
+          const DailyRewardMatchingResult = images.matchTemplate(
+            captureScreen(),
+            receive_reward_image,
+            {
+              max: 1,
+              region: [850, 650, 200, 100],
+            }
+          );
+          const DailyRewardMatche = DailyRewardMatchingResult.matches[0];
+          if (DailyRewardMatche) {
+            console.log("领取每日奖励");
+
+            click(DailyRewardMatche.point.x + 5, DailyRewardMatche.point.y + 5);
+            // 等待动画
+            sleep(2000);
+
+            // 确认
+            click(951, 616);
+            // 等待动画
+            sleep(2000);
+
+            getDailyRewardTimeStamp = new Date().getTime();
+          }
+        }
 
         // 点击出征
         click(1808, 980);
@@ -118,7 +155,7 @@ while (true) {
     if (!abandon) {
       matchingResult = images.matchTemplate(captureScreen(), abandon_image, {
         max: 1,
-        region: [1350, 960, 150, 100],
+        region: [1125, 661, 262, 85],
       });
       if (
         matchingResult.matches !== undefined &&
@@ -152,7 +189,7 @@ while (true) {
         matchingResult.matches[0].point.x + 5,
         matchingResult.matches[0].point.y + 5
       );
-      sleep(1500);
+      sleep(2500);
       break;
     }
   }
@@ -190,6 +227,11 @@ function waitForStartFight(flag) {
     ) {
       break;
     }
+
+    if (faildedCount > 2) {
+      console.log("未成功索敌");
+      break;
+    }
   }
 }
 
@@ -217,10 +259,12 @@ function selectTrapezoidal() {
       );
       break;
     }
-    faildedCount++;
 
-    if (faildedCount > 5) {
+    if (faildedCount > 2) {
+      console.log("未成功索敌");
       break;
     }
+
+    faildedCount++;
   }
 }

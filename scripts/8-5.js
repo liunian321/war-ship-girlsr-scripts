@@ -94,7 +94,7 @@ while (true) {
     if (!abandon) {
       matchingResult = images.matchTemplate(captureScreen(), abandon_image, {
         max: 1,
-        region: [1350, 960, 150, 100],
+        region: [1125, 661, 262, 85],
       });
       if (
         matchingResult.matches !== undefined &&

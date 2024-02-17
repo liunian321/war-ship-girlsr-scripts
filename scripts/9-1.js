@@ -123,12 +123,14 @@ while (true) {
   }
 
   sleep(15000);
+  // 检查是否需要放弃战斗
   let abandon = false;
+
   while (true) {
     if (!abandon) {
       matchingResult = images.matchTemplate(captureScreen(), abandon_image, {
         max: 1,
-        region: [1350, 960, 150, 100],
+        region: [1125, 661, 262, 85],
       });
       if (
         matchingResult.matches !== undefined &&
