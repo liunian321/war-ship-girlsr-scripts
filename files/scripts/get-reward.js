@@ -46,7 +46,8 @@ function getReward(收获奖励, 章节结束, 远征完成, 确认, 出征, qui
     ) {
       matchingResult = images.matchTemplate(captureScreen(), 章节结束, {
         max: 1,
-        region: [140, 710, 90, 90],
+        region: [100, 708, 200, 30],
+        threshold: 0.8,
       });
 
       // 已经到达最后一章，结束
