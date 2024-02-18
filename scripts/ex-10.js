@@ -61,6 +61,22 @@ while (true) {
           new Date().getHours() === 0 ||
           new Date().getTime() - getDailyRewardTimeStamp > 23 * 60 * 60 * 1000
         ) {
+          const news = images.read("/mnt/shared/Pictures/news.png");
+          const newsMatchingResult = images.matchTemplate(
+            captureScreen(),
+            news,
+            {
+              max: 1,
+              region: [1600, 51, 234, 50],
+            }
+          );
+          const newsMatche = newsMatchingResult.matches[0];
+          if (newsMatche) {
+            click(newsMatche.point.x + 5, newsMatche.point.y + 5);
+            sleep(2000);
+          }
+
+
           const DailyRewardMatchingResult = images.matchTemplate(
             captureScreen(),
             receive_reward_image,
