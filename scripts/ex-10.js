@@ -72,33 +72,40 @@ while (true) {
           );
           const newsMatche = newsMatchingResult.matches[0];
           if (newsMatche) {
-            click(newsMatche.point.x + 5, newsMatche.point.y + 5);
-            sleep(2000);
-          }
+            console.log("点击退出新闻");
+            for (let index = 0; index < 3; index++) {
+              click(55, 64);
+              sleep(1000);
+              click(55, 64);
+              sleep(2000);
 
+              const DailyRewardMatchingResult = images.matchTemplate(
+                captureScreen(),
+                receive_reward_image,
+                {
+                  max: 1,
+                  region: [850, 650, 200, 100],
+                }
+              );
+              const DailyRewardMatche = DailyRewardMatchingResult.matches[0];
+              if (DailyRewardMatche) {
+                console.log("领取每日奖励");
 
-          const DailyRewardMatchingResult = images.matchTemplate(
-            captureScreen(),
-            receive_reward_image,
-            {
-              max: 1,
-              region: [850, 650, 200, 100],
+                click(
+                  DailyRewardMatche.point.x + 5,
+                  DailyRewardMatche.point.y + 5
+                );
+                // 等待动画
+                sleep(2000);
+
+                // 确认
+                click(951, 616);
+                // 等待动画
+                sleep(2000);
+
+                getDailyRewardTimeStamp = new Date().getTime();
+              }
             }
-          );
-          const DailyRewardMatche = DailyRewardMatchingResult.matches[0];
-          if (DailyRewardMatche) {
-            console.log("领取每日奖励");
-
-            click(DailyRewardMatche.point.x + 5, DailyRewardMatche.point.y + 5);
-            // 等待动画
-            sleep(2000);
-
-            // 确认
-            click(951, 616);
-            // 等待动画
-            sleep(2000);
-
-            getDailyRewardTimeStamp = new Date().getTime();
           }
         }
 
