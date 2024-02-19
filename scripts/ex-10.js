@@ -67,7 +67,6 @@ while (true) {
             news,
             {
               max: 1,
-              region: [1600, 51, 234, 50],
             }
           );
           const newsMatche = newsMatchingResult.matches[0];
@@ -106,6 +105,8 @@ while (true) {
                 getDailyRewardTimeStamp = new Date().getTime();
               }
             }
+          } else {
+            console.log("没有找到新闻");
           }
         }
 
