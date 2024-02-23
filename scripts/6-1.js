@@ -145,6 +145,7 @@ while (true) {
     matchingResult = images.matchTemplate(captureScreen(), go_back_image, {
       max: 1,
       region: [1210, 670, 90, 60],
+      threshold: 0.8,
     });
     if (
       matchingResult.matches !== undefined &&

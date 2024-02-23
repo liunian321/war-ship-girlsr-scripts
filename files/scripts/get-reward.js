@@ -55,7 +55,7 @@ function getReward(收获奖励, 章节结束, 远征完成, 确认, 出征, qui
         matchingResult.matches !== undefined &&
         matchingResult.matches.length > 0
       ) {
-        console.log("章节结束");
+        console.log("章节结束, 结束收获奖励");
         break;
       }
 
