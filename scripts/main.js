@@ -2,7 +2,9 @@ const reuslt = images.requestScreenCapture(false);
 console.log(reuslt);
 const image = captureScreen();
 
-const clip = images.clip(image, 1617, 53, 216, 47);
-const fileName = "news";
+const clip = images.clip(image, 848, 16, 94, 90);
+const fileName = "舰船已满";
+104,55
+48,109
 
-clip.saveTo("/mnt/shared/Pictures/" + fileName + ".png");
+clip.saveTo("/mnt/shared/Pictures/failed/" + fileName + ".png");

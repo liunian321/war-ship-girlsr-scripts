@@ -8,28 +8,13 @@ const 确认 = images.read("/mnt/shared/Pictures/confirm.png");
 
 // 是否快速收获奖励 true(开启) 或者 false(关闭)
 const quickGetReward = false;
-let isFirst = true;
 
-while (true) {
-  const isGetReward = getReward(
-    收获奖励,
-    章节结束,
-    远征完成,
-    确认,
-    出征,
-    quickGetReward
-  );
+/**
+ * 当前页面要处于出征页面！否则不会收获奖励
+ */
 
-  // 如果是第一次并且已经收获奖励，则等待15分钟
-  if (isGetReward && isFirst) {
-    isFirst = false;
-  }
-
-  if (isFirst) {
-    // 第一次等待5分钟
-    sleep(5 * 60 * 1000);
-  } else {
-    // 之后每次等待15分钟
-    sleep(15 * 60 * 1000);
-  }
-}
+getReward(收获奖励, 章节结束, 远征完成, 确认, 出征, quickGetReward)
+// 15分钟检查一次
+setInterval(() => {
+  getReward(收获奖励, 章节结束, 远征完成, 确认, 出征, quickGetReward);
+}, 15 * 60 * 1000);
