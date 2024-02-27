@@ -26,7 +26,6 @@ const quickGetReward = false;
 requestScreenCapture(false);
 
 while (true) {
-  console.log("确认地图是否为8-5!");
   let matchingResult = images.matchTemplate(captureScreen(), title_image, {
     max: 1,
     region: [1460, 195, 185, 40],
@@ -40,24 +39,24 @@ while (true) {
   }
 
   // 尝试收获奖励
-  getReward(收获奖励, 章节结束, 远征完成, 确认,出征,quickGetReward);
+  // getReward(收获奖励, 章节结束, 远征完成, 确认,出征,quickGetReward);
 
   let matche = matchingResult.matches[0];
   click(matche.point.x + 5, matche.point.y + 5);
-  sleep(1200);
+  sleep(2000);
 
   matchingResult = images.matchTemplate(captureScreen(), go_to_war_image, {
     max: 1,
     region: [1570, 970, 220, 65],
   });
 
-  // 开始出征
+  console.log("开始出征");
   matche = matchingResult.matches[0];
   click(matche.point.x + 5, matche.point.y + 5);
 
   // 等待出征动画
   for (let index = 0; index < 7; index++) {
-    sleep(300);
+    sleep(500);
     click(1000, 950);
   }
 
@@ -75,7 +74,7 @@ while (true) {
   ) {
     console.log("不是目标舰队，返回");
     click(1370, 980);
-    sleep(1200);
+    sleep(2000);
     continue;
   }
 
@@ -107,7 +106,7 @@ while (true) {
           matchingResult.matches[0].point.y + 5
         );
         abandon = true;
-        sleep(1500);
+        sleep(2000);
       }
     }
 
@@ -151,7 +150,7 @@ while (true) {
       break;
     }
 
-    sleep(1200);
+    sleep(2000);
     click(200, 100);
   }
 }

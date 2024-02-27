@@ -67,7 +67,9 @@ while (true) {
           new Date().getHours() === 0 ||
           new Date().getTime() - getDailyRewardTimeStamp > 23 * 60 * 60 * 1000
         ) {
+          sleep(3000);
           const news = images.read("/mnt/shared/Pictures/news.png");
+
           const newsMatchingResult = images.matchTemplate(
             captureScreen(),
             news,
@@ -78,9 +80,7 @@ while (true) {
           const newsMatche = newsMatchingResult.matches[0];
           if (newsMatche) {
             console.log("点击退出新闻");
-            for (let index = 0; index < 3; index++) {
-              click(55, 64);
-              sleep(1000);
+            for (let index = 0; index < 5; index++) {
               click(55, 64);
               sleep(2000);
 
@@ -281,6 +281,12 @@ function waitForStartFight(flag) {
     }
 
     if (faildedCount > 2) {
+      // 截图
+      // const image = captureScreen();
+      // image.saveTo("/mnt/shared/Pictures/failed/未成功索敌.png");
+      // 判断是否船舱满了 如果是则退出
+      
+
       console.log("未成功索敌");
       break;
     }
