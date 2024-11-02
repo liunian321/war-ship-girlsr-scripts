@@ -9,8 +9,8 @@ const go_back_image = images.read("/mnt/shared/Pictures/go_back.png");
 const receive_reward_image = images.read("/mnt/shared/Pictures/receive_reward.png");
 // 活动图案
 const activation_image = images.read("/mnt/shared/Pictures/2024-09-30-activation_flag.png");
-// EX-10 图标
-const ex_10_image = images.read("/mnt/shared/Pictures/EX-10_flag.png");
+// EX-7 图标
+const ex_7_image = images.read("/mnt/shared/Pictures/EX-7_flag.png");
 
 // 阵型
 const trapezoidal_image = images.read("/mnt/shared/Pictures/trapezoidal.png");
@@ -45,16 +45,16 @@ while (true) {
     } else {
         if (attempted_battles >= 1800) {
             // 退出出击准备，准备收获奖励
-            click(1832, 107);
+            secureClick(1832, 107);
 
             // 等待动画
-            rest(getRandomInt(1900, 2100));
+            rest(2000);
 
             // 退出作战页面
-            click(77, 77);
+            secureClick(77, 77);
 
             // 等待动画
-            rest(getRandomInt(1900, 2100));
+            rest(2000);
 
             // 如果距离上次领取每日奖励的时间超过23小时或者当前小时为0点，则尝试领取每日奖励
             if (
@@ -66,7 +66,7 @@ while (true) {
             }
 
             // 点击出征
-            click(1808, 980);
+            secureClick(1800, 970);
 
             // 等待动画
             rest(getRandomInt(1900, 2100));
@@ -75,26 +75,26 @@ while (true) {
             attempted_battles = 0;
 
             console.log("退出出征页面");
-            click(77, 77);
+            secureClick(77, 77);
 
             console.log("点击活动图案");
             // 由于返回主界面需要加载，所以等待一段时间
             waitForImage({
                 image: activation_image,
-                click: true,
+                secureClick: true,
             });
 
             rest(getRandomInt(1900, 2100));
 
-            // 点击ex-10图标
-            matchingResult = images.matchTemplate(captureScreen(), ex_10_image, {
+            // 点击EX-7图标
+            matchingResult = images.matchTemplate(captureScreen(), ex_7_image, {
                 max: 1,
             });
 
             matche = matchingResult.matches[0];
-            click(matche.point.x + 5, matche.point.y + 5);
+            secureClick(matche.point.x + 5, matche.point.y + 5);
             // 等待动画
-            rest(2000);
+            rest(getRandomInt(1900, 2100));
         }
 
         while (true) {
@@ -107,11 +107,11 @@ while (true) {
 
             if (matche) {
                 console.log("出击准备");
-                click(matche.point.x + 5, matche.point.y + 5);
+                secureClick(matche.point.x + 5, matche.point.y + 5);
                 break;
             }
 
-            rest(2500);
+            rest(getRandomInt(1900, 2100));
         }
 
         while (true) {
@@ -123,32 +123,33 @@ while (true) {
 
             matche = matchingResult.matches[0];
             if (matche) {
-                click(matche.point.x + 5, matche.point.y + 5);
-                click(matche.point.x + 5, matche.point.y + 5);
+                secureClick(matche.point.x + 5, matche.point.y + 5);
+                rest(getRandomInt(100, 300))
+                secureClick(matche.point.x + 5, matche.point.y + 5);
                 console.log("开始出征");
                 rest(2000);
                 break;
             }
-            rest(1000);
+            rest(getRandomInt(1000, 1200));
         }
 
         // 等待出征动画
         for (let index = 0; index < 7; index++) {
             rest(300);
-            click(1000, 950);
+            secureClick(970, 920);
         }
 
         // 等待出征界面
         waitForStartFight();
 
-        console.log("准备开始战斗");
-        click(1645, 985);
-        rest(getRandomInt(2000, 2100));
+        // console.log("准备开始战斗");
+        // secureClick(1645, 985);
+        // rest(getRandomInt(1500, 1600));
 
         // 选择梯形阵
-        selectTrapezoidal();
+        // selectTrapezoidal();
 
-        rest(getRandomInt(20_000, 25_000));
+        rest(getRandomInt(30_000, 35_000));
         // 检查是否需要放弃战斗
         let abandon = false;
 
@@ -164,14 +165,14 @@ while (true) {
                     matchingResult.matches[0].similarity > 0.8
                 ) {
                     console.log("放弃战斗");
-                    click(matchingResult.matches[0].point.x + 5, matchingResult.matches[0].point.y + 5);
+                    secureClick(matchingResult.matches[0].point.x + 5, matchingResult.matches[0].point.y + 5);
                     abandon = true;
                     rest(1500);
                 }
             }
 
-            click(1200, 600);
-            rest(getRandomInt(500, 1000));
+            secureClick(1200, 600);
+            rest(500);
 
             matchingResult = images.matchTemplate(captureScreen(), go_back_image, {
                 max: 1,
@@ -183,8 +184,8 @@ while (true) {
                 matchingResult.matches[0].similarity > 0.8
             ) {
                 console.log("回港");
-                click(matchingResult.matches[0].point.x + 5, matchingResult.matches[0].point.y + 5);
-                rest(getRandomInt(2400, 2600));
+                secureClick(matchingResult.matches[0].point.x + 5, matchingResult.matches[0].point.y + 5);
+                rest(2500);
                 break;
             }
         }
@@ -205,8 +206,8 @@ function waitForStartFight() {
             break;
         }
         faildedCount++;
-        click(800, 950);
-        rest(500 + 50 * faildedCount);
+        secureClick(800, 950);
+        rest(500 + 100 * faildedCount);
         matchingResult = images.matchTemplate(captureScreen(), trapezoidal_image, {
             max: 1,
             region: [1700, 800, 160, 60],
@@ -219,7 +220,7 @@ function waitForStartFight() {
             break;
         }
 
-        if (faildedCount > 2) {
+        if (faildedCount > 1) {
             // 截图
             // const image = captureScreen();
             // image.saveTo("/mnt/shared/Pictures/failed/未成功索敌.png");
@@ -234,7 +235,7 @@ function waitForStartFight() {
 function selectTrapezoidal() {
     let faildedCount = 0;
     while (true) {
-        rest(getRandomInt(1500, 1600));
+        rest(getRandomInt(1000, 1200));
         const matchingResult = images.matchTemplate(captureScreen(), trapezoidal_image, {
             max: 1,
             region: [1700, 800, 160, 60],
@@ -245,7 +246,7 @@ function selectTrapezoidal() {
             matchingResult.matches[0].similarity > 0.8
         ) {
             console.log("使用梯形阵");
-            click(matchingResult.matches[0].point.x + 5, matchingResult.matches[0].point.y + 5);
+            secureClick(matchingResult.matches[0].point.x + 5, matchingResult.matches[0].point.y + 5);
             break;
         }
 
@@ -267,8 +268,8 @@ function waitForImage(data) {
         });
 
         const matche = matchingResult.matches[0];
-        if (matche && "click" in data && data.click) {
-            click(matche.point.x + 5, matche.point.y + 5);
+        if (matche && "secureClick" in data && data.secureClick) {
+            secureClick(matche.point.x + 5, matche.point.y + 5);
             rest(2000);
             break;
         }
@@ -291,7 +292,7 @@ function receive_daily_reward() {
     if (newsMatche) {
         console.log("点击退出新闻");
         for (let index = 0; index < 5; index++) {
-            click(55, 64);
+            secureClick(55, 64);
             rest(2000);
 
             const DailyRewardMatchingResult = images.matchTemplate(
@@ -306,14 +307,14 @@ function receive_daily_reward() {
             if (DailyRewardMatche) {
                 console.log("领取每日奖励");
 
-                click(DailyRewardMatche.point.x + 5, DailyRewardMatche.point.y + 5);
+                secureClick(DailyRewardMatche.point.x + 5, DailyRewardMatche.point.y + 5);
                 // 等待动画
                 rest(2000);
 
                 // 确认
-                click(951, 616);
+                secureClick(951, 616);
                 // 等待动画
-                rest(2000);
+                rest(getRandomInt(1500, 2000));
 
                 getDailyRewardTimeStamp = new Date().getTime();
                 break;
@@ -326,4 +327,13 @@ function receive_daily_reward() {
 
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+/**
+ * 对点击坐标进行微调，防止被识别为机器人
+ * @param x
+ * @param y
+ */
+function secureClick(x, y) {
+    click(x + getRandomInt(1, 10), y + getRandomInt(1, 10));
 }

@@ -1,12 +1,14 @@
 const getReward = require("/mnt/shared/Pictures/scripts/get-reward.js");
 
-const return_image = images.read("/mnt/shared/Pictures/return.png");
 const sortie_prepare = images.read("/mnt/shared/Pictures/sortie_prepare.png");
 const go_to_war_image = images.read("/mnt/shared/Pictures/go_to_war.png");
 const start_fight_image = images.read("/mnt/shared/Pictures/start_fight.png");
 const abandon_image = images.read("/mnt/shared/Pictures/abandon.png");
-const go_back_image = images.read("/mnt/shared/Pictures/go_back.png");
 const receive_reward_image = images.read("/mnt/shared/Pictures/receive_reward.png");
+const advance_image = images.read("/mnt/shared/Pictures/advance.png");
+const goto_rapid_recharge = images.read("/mnt/shared/Pictures/goto_rapid_recharge.png");
+const rapid_recharge = images.read("/mnt/shared/Pictures/rapid_recharge.png");
+
 // 活动图案
 const activation_image = images.read("/mnt/shared/Pictures/2024-09-30-activation_flag.png");
 // EX-10 图标
@@ -30,6 +32,9 @@ let attempted_battles = 0;
 // 领取每日奖励时间戳
 let getDailyRewardTimeStamp = -1;
 
+// 用于计算什么时候补给
+let gotoWarCount = 0;
+
 while (true) {
     let matchingResult = images.matchTemplate(captureScreen(), sortie_prepare, {
         max: 1,
@@ -48,13 +53,13 @@ while (true) {
             click(1832, 107);
 
             // 等待动画
-            rest(getRandomInt(1900, 2100));
+            rest(2000);
 
             // 退出作战页面
             click(77, 77);
 
             // 等待动画
-            rest(getRandomInt(1900, 2100));
+            rest(2000);
 
             // 如果距离上次领取每日奖励的时间超过23小时或者当前小时为0点，则尝试领取每日奖励
             if (
@@ -69,7 +74,7 @@ while (true) {
             click(1808, 980);
 
             // 等待动画
-            rest(getRandomInt(1900, 2100));
+            rest(2000);
 
             getReward(收获奖励, 远征完成, 确认, 出征, true);
             attempted_battles = 0;
@@ -84,7 +89,7 @@ while (true) {
                 click: true,
             });
 
-            rest(getRandomInt(1900, 2100));
+            rest(2000);
 
             // 点击ex-10图标
             matchingResult = images.matchTemplate(captureScreen(), ex_10_image, {
@@ -114,6 +119,45 @@ while (true) {
             rest(2500);
         }
 
+        // 如果已经出征了4次，则手动补给
+        if (gotoWarCount === 4) {
+            gotoWarCount = 0;
+            console.log("手动补给");
+            while (true) {
+                // 进入快速补给
+                matchingResult = images.matchTemplate(captureScreen(), goto_rapid_recharge, {
+                    max: 1,
+                    region: [500, 800, 200, 100],
+                });
+
+                matche = matchingResult.matches[0];
+                if (matche && matche.similarity > 0.8) {
+                    click(matche.point.x + 5, matche.point.y + 5);
+                    rest(2000);
+                    break;
+                }
+                rest(1000);
+            }
+
+            // 点击快速补给
+            while (true) {
+                // 进入快速补给
+                matchingResult = images.matchTemplate(captureScreen(), rapid_recharge, {
+                    max: 1,
+                    region: [1500, 700, 250, 100],
+                });
+
+                matche = matchingResult.matches[0];
+                if (matche && matche.similarity > 0.8) {
+                    click(matche.point.x + 5, matche.point.y + 5);
+                    console.log("补给完成");
+                    rest(2000);
+                    break;
+                }
+                rest(1000);
+            }
+        }
+
         while (true) {
             // 开始出征
             matchingResult = images.matchTemplate(captureScreen(), go_to_war_image, {
@@ -122,8 +166,9 @@ while (true) {
             });
 
             matche = matchingResult.matches[0];
-            if (matche) {
+            if (matche && matche.similarity > 0.8) {
                 click(matche.point.x + 5, matche.point.y + 5);
+                rest(getRandomInt(100,300))
                 click(matche.point.x + 5, matche.point.y + 5);
                 console.log("开始出征");
                 rest(2000);
@@ -138,56 +183,11 @@ while (true) {
             click(1000, 950);
         }
 
-        // 等待出征界面
-        waitForStartFight();
+        fight(false, 18000);
+        fight(false, 18000);
+        fight(true, 18000);
 
-        console.log("准备开始战斗");
-        click(1645, 985);
-        rest(getRandomInt(2000, 2100));
-
-        // 选择梯形阵
-        selectTrapezoidal();
-
-        rest(getRandomInt(20_000, 25_000));
-        // 检查是否需要放弃战斗
-        let abandon = false;
-
-        while (true) {
-            if (!abandon) {
-                matchingResult = images.matchTemplate(captureScreen(), abandon_image, {
-                    max: 1,
-                    region: [1125, 661, 262, 85],
-                });
-                if (
-                    matchingResult.matches !== undefined &&
-                    matchingResult.matches.length > 0 &&
-                    matchingResult.matches[0].similarity > 0.8
-                ) {
-                    console.log("放弃战斗");
-                    click(matchingResult.matches[0].point.x + 5, matchingResult.matches[0].point.y + 5);
-                    abandon = true;
-                    rest(1500);
-                }
-            }
-
-            click(1200, 600);
-            rest(getRandomInt(500, 1000));
-
-            matchingResult = images.matchTemplate(captureScreen(), go_back_image, {
-                max: 1,
-                region: [1210, 670, 90, 60],
-            });
-            if (
-                matchingResult.matches !== undefined &&
-                matchingResult.matches.length > 0 &&
-                matchingResult.matches[0].similarity > 0.8
-            ) {
-                console.log("回港");
-                click(matchingResult.matches[0].point.x + 5, matchingResult.matches[0].point.y + 5);
-                rest(getRandomInt(2400, 2600));
-                break;
-            }
-        }
+        gotoWarCount++;
     }
 }
 
@@ -206,7 +206,7 @@ function waitForStartFight() {
         }
         faildedCount++;
         click(800, 950);
-        rest(500 + 50 * faildedCount);
+        rest(1000 + 50 * faildedCount);
         matchingResult = images.matchTemplate(captureScreen(), trapezoidal_image, {
             max: 1,
             region: [1700, 800, 160, 60],
@@ -219,7 +219,7 @@ function waitForStartFight() {
             break;
         }
 
-        if (faildedCount > 2) {
+        if (faildedCount > 3) {
             // 截图
             // const image = captureScreen();
             // image.saveTo("/mnt/shared/Pictures/failed/未成功索敌.png");
@@ -231,10 +231,10 @@ function waitForStartFight() {
     }
 }
 
-function selectTrapezoidal() {
+function selectFormation() {
     let faildedCount = 0;
     while (true) {
-        rest(getRandomInt(1500, 1600));
+        rest(1000 + faildedCount * 500);
         const matchingResult = images.matchTemplate(captureScreen(), trapezoidal_image, {
             max: 1,
             region: [1700, 800, 160, 60],
@@ -249,12 +249,86 @@ function selectTrapezoidal() {
             break;
         }
 
-        if (faildedCount > 2) {
+        if (faildedCount > 3) {
             console.log("未成功索敌");
             break;
         }
 
         faildedCount++;
+    }
+}
+
+function fight(goBack, waitTime) {
+    // 等待出征界面
+    waitForStartFight();
+
+    console.log("准备开始战斗");
+    click(1645, 985);
+    rest(1500);
+
+    // 选择梯形阵
+    selectFormation();
+
+    if (waitTime) {
+        rest(waitTime);
+    } else {
+        rest(18000);
+    }
+    // 检查是否需要放弃战斗
+    let abandon = false;
+
+    while (true) {
+        if (!abandon) {
+            matchingResult = images.matchTemplate(captureScreen(), abandon_image, {
+                max: 1,
+                region: [1125, 661, 262, 85],
+            });
+            if (
+                matchingResult.matches !== undefined &&
+                matchingResult.matches.length > 0 &&
+                matchingResult.matches[0].similarity > 0.8
+            ) {
+                console.log("放弃战斗");
+                click(matchingResult.matches[0].point.x + 5, matchingResult.matches[0].point.y + 5);
+                abandon = true;
+                rest(1500);
+            }
+        }
+
+        click(1200, 600);
+        rest(500);
+
+
+        if (goBack) {
+            matchingResult = images.matchTemplate(captureScreen(), sortie_prepare, {
+                max: 1,
+                region: [1450, 860, 380, 120],
+            });
+            if (
+                matchingResult.matches !== undefined &&
+                matchingResult.matches.length > 0 &&
+                matchingResult.matches[0].similarity > 0.8
+            ) {
+                break;
+            }
+        } else {
+            matchingResult = images.matchTemplate(captureScreen(), advance_image, {
+                max: 1,
+                region: [620, 670, 90, 60],
+            });
+            if (
+                matchingResult.matches !== undefined &&
+                matchingResult.matches.length > 0 &&
+                matchingResult.matches[0].similarity > 0.8
+            ) {
+                console.log("前进");
+                click(
+                    matchingResult.matches[0].point.x + 5,
+                    matchingResult.matches[0].point.y + 5
+                );
+                break;
+            }
+        }
     }
 }
 
@@ -280,6 +354,9 @@ function rest(time) {
     attempted_battles += time / 1000;
 }
 
+/**
+ * 领取每日奖励
+ */
 function receive_daily_reward() {
     rest(3000);
     const news = images.read("/mnt/shared/Pictures/news.png");
